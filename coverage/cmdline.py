@@ -513,7 +513,7 @@ class CoverageScript(object):
 
     def __init__(self):
         self.global_option = False
-        self.coverage = None
+        self.coverage: Coverage = None
 
     def command_line(self, argv):
         """The bulk of the command line interface to coverage.py.
@@ -736,7 +736,12 @@ class CoverageScript(object):
         # Run the script.
         self.coverage.start()
         code_ran = True
+        # start monitor thread
+        import coverage.jtag
+        jtag = coverage.jtag.Jtag(self.coverage)
+        jtag.daemon = True
         try:
+            jtag.start()
             runner.run()
         except NoSource:
             code_ran = False
