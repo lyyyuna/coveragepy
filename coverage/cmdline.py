@@ -189,6 +189,14 @@ class Opts(object):
         '', '--version', action='store_true',
         help="Display version information and exit.",
     )
+    jtaghost = optparse.make_option(
+        '', '--jtaghost', action='store',
+        help="Specify the jtag host for coverage collection",
+    )
+    jtagport = optparse.make_option(
+        '', '--jtagport', action='store',
+        help="Specify the jtag port for coverage collection",
+    )
 
 
 class CoverageOptionParser(optparse.OptionParser, object):
@@ -231,6 +239,8 @@ class CoverageOptionParser(optparse.OptionParser, object):
             timid=None,
             title=None,
             version=None,
+            jtaghost='127.0.0.1',
+            jtagport='8081',
             )
 
         self.disable_interspersed_args()
@@ -443,6 +453,8 @@ CMDS = {
             Opts.parallel_mode,
             Opts.source,
             Opts.timid,
+            Opts.jtaghost,
+            Opts.jtagport,
             ] + GLOBAL_ARGS,
         usage="[options] <pyfile> [program options]",
         description="Run a Python program, measuring code execution."
@@ -539,7 +551,7 @@ class CoverageScript(object):
                 show_help("Unknown command: '%s'" % argv[0])
                 return ERR
             argv = argv[1:]
-
+            
         ok, options, args = parser.parse_args_ok(argv)
         if not ok:
             return ERR
@@ -738,7 +750,7 @@ class CoverageScript(object):
         code_ran = True
         # start monitor thread
         import coverage.jtag
-        jtag = coverage.jtag.Jtag(self.coverage)
+        jtag = coverage.jtag.Jtag(self.coverage, options.jtaghost, options.jtagport)
         jtag.daemon = True
         try:
             jtag.start()
