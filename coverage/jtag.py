@@ -17,6 +17,10 @@ class Jtag(threading.Thread):
     def run(self):
         cov = self.coverage
         class JtagHandler(BaseHTTPRequestHandler):
+            def log_message(self, format, *args):
+                # no logging, keep stdout/stderr quiet
+                return
+
             def do_GET(self):
                 path = urlparse(self.path).path
                 query = urlparse(self.path).query
