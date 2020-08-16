@@ -88,9 +88,9 @@ setup_args = dict(
         # Install a script as "coverage", and as "coverage[23]", and as
         # "coverage-2.7" (or whatever).
         'console_scripts': [
-            'coverage = coverage.cmdline:main',
-            'coverage%d = coverage.cmdline:main' % sys.version_info[:1],
-            'coverage-%d.%d = coverage.cmdline:main' % sys.version_info[:2],
+            'coverage-jtag = coverage.cmdline:main',
+            'coverage-jtag%d = coverage.cmdline:main' % sys.version_info[:1],
+            'coverage-jtag-%d.%d = coverage.cmdline:main' % sys.version_info[:2],
         ],
     },
 
@@ -110,7 +110,7 @@ setup_args = dict(
     keywords='code coverage testing',
     license='Apache 2.0',
     classifiers=classifier_list,
-    url="https://github.com/nedbat/coveragepy",
+    url="https://github.com/lyyyuna/coveragepy",
     project_urls={
         'Documentation': __url__,
         'Funding': (
